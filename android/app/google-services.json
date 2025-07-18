@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "684731288764",
+    "project_id": "shadow-chat-dc374",
+    "storage_bucket": "shadow-chat-dc374.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684731288764:android:710ba9adf64b894eb814b9",
+        "android_client_info": {
+          "package_name": "com.example.shadow_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEsjg7XKFaXOEeNaAzoGsnp5PoX2QAL98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
