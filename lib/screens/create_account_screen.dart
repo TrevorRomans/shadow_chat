@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CreateAccountScreen extends StatefulWidget {
+  static String id = 'create_account_screen';
+
   const CreateAccountScreen({super.key});
 
   @override

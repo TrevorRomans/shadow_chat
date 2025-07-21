@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SessionPickerScreen extends StatefulWidget {
+  static String id = 'session_picker_screen';
+
   const SessionPickerScreen({super.key});
 
   @override
