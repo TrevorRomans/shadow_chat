@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'create_account_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
@@ -12,6 +13,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Center(
+        child: Text('This is the Login Screen'),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.pushNamed(context, CreateAccountScreen.id);
+      }),
+    );
+    ;
   }
 }
