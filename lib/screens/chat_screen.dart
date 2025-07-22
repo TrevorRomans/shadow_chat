@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'welcome_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
@@ -12,6 +13,14 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Center(
+        child: Text('This is the Chat Screen'),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.pushNamed(context, WelcomeScreen.id);
+      }),
+    );
+    ;
   }
 }
