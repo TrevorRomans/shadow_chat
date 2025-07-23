@@ -21,6 +21,5 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         Navigator.pushNamed(context, ChatScreen.id);
       }),
     );
-    ;
   }
 }

@@ -21,6 +21,5 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushNamed(context, CreateAccountScreen.id);
       }),
     );
-    ;
   }
 }

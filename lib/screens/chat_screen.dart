@@ -21,6 +21,5 @@ class _ChatScreenState extends State<ChatScreen> {
         Navigator.pushNamed(context, WelcomeScreen.id);
       }),
     );
-    ;
   }
 }

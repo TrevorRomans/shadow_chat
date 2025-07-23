@@ -21,6 +21,5 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         Navigator.pushNamed(context, SessionPickerScreen.id);
       }),
     );
-    ;
   }
 }
