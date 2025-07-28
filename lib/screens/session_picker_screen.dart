@@ -10,6 +10,7 @@ class SessionPickerScreen extends StatefulWidget {
   State<SessionPickerScreen> createState() => _SessionPickerScreenState();
 }
 
+// This is the first commit to the Session Picker Screen branch!
 class _SessionPickerScreenState extends State<SessionPickerScreen> {
   @override
   Widget build(BuildContext context) {
