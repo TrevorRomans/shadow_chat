@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadow_chat/constants.dart';
 import 'create_account_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,9 +19,14 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: Text('This is the Login Screen'),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushNamed(context, CreateAccountScreen.id);
-      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: kIsFABEnabled
+            ? () {
+                Navigator.pushNamed(context, CreateAccountScreen.id);
+              }
+            : null,
+        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadow_chat/constants.dart';
 import 'session_picker_screen.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -18,9 +19,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       body: Center(
         child: Text('This is the Account Creation Screen'),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushNamed(context, SessionPickerScreen.id);
-      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: kIsFABEnabled
+            ? () {
+                Navigator.pushNamed(context, SessionPickerScreen.id);
+              }
+            : null,
+        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
+      ),
     );
   }
 }

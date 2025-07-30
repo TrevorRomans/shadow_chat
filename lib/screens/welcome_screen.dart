@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadow_chat/constants.dart';
 import 'login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -18,9 +19,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: Center(
         child: Text('This is the Welcome Screen'),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushNamed(context, LoginScreen.id);
-      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: kIsFABEnabled
+            ? () {
+                Navigator.pushNamed(context, LoginScreen.id);
+              }
+            : null,
+        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
+      ),
     );
   }
 }

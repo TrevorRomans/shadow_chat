@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadow_chat/constants.dart';
 import 'welcome_screen.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -18,9 +19,14 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Center(
         child: Text('This is the Chat Screen'),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushNamed(context, WelcomeScreen.id);
-      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: kIsFABEnabled
+            ? () {
+                Navigator.pushNamed(context, WelcomeScreen.id);
+              }
+            : null,
+        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
+      ),
     );
   }
 }

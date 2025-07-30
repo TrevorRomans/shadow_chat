@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadow_chat/constants.dart';
 import 'chat_screen.dart';
 
 class SessionPickerScreen extends StatefulWidget {
@@ -18,9 +19,14 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
       body: Center(
         child: Text('This is the Session Picker Screen'),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushNamed(context, ChatScreen.id);
-      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: kIsFABEnabled
+            ? () {
+                Navigator.pushNamed(context, ChatScreen.id);
+              }
+            : null,
+        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
+      ),
     );
   }
 }
