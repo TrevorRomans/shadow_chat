@@ -12,10 +12,41 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 // This is my first commit to the Welcome Screen branch!
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+  late Animation animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+      duration: Duration(seconds: 1),
+      vsync: this,
+      upperBound: 1.0,
+    );
+
+    animation = ColorTween(begin: Colors.white, end: Colors.black45)
+        .animate(controller);
+
+    controller.forward();
+
+    controller.addListener(() {
+      setState(() {});
+    });
+
+    @override
+    void dispose() {
+      controller.dispose();
+      super.dispose();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: animation.value,
       body: Center(
         child: Text('This is the Welcome Screen'),
       ),
