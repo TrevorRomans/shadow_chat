@@ -10,6 +10,7 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
+// This is the first commit to the Chat Screen branch!
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
