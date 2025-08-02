@@ -65,6 +65,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     child: Image.asset('images/chat_logo.png'),
                   ),
                 ),
+                SizedBox(
+                  width: 15.0,
+                ),
                 DefaultTextStyle(
                   style: TextStyle(
                     fontSize: 45.0,
