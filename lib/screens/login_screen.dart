@@ -25,6 +25,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_outlined),
+        ),
+      ),
       backgroundColor: Colors.black45,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
