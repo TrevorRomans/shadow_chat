@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shadow_chat/components/rounded_button.dart';
-import 'package:shadow_chat/constants.dart';
+import '../components/rounded_button.dart';
+import '../constants.dart';
 import 'session_picker_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
