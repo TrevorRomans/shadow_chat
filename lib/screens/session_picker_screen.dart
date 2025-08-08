@@ -13,7 +13,7 @@ class SessionPickerScreen extends StatefulWidget {
   State<SessionPickerScreen> createState() => _SessionPickerScreenState();
 }
 
-// This is the first commit to the Session Picker Screen branch!
+//TODO: implement Firebase user functionality
 class _SessionPickerScreenState extends State<SessionPickerScreen> {
   bool isViewer = true;
   bool showSpinner = false;
