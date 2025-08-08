@@ -57,6 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
+              // makes the row centered on the screen
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Hero(
@@ -80,6 +81,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     animatedTexts: [
                       TypewriterAnimatedText(
                         'Shadow Chat',
+                        textStyle: TextStyle(color: Color(0xFFFFD700)),
                         speed: Duration(milliseconds: 300),
                       ),
                     ],
