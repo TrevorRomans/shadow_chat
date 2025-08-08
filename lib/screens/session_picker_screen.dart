@@ -50,25 +50,34 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                 onChanged: (value) {
                   viewerName = value;
                 },
+                onTapOutside: (event) {
+                  // If the user taps outside the field, the keyboard will close
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
                 decoration: kInputTextDecoration.copyWith(
-                  hintText: 'Enter your username',
                   labelText: 'Call me...',
+                  hintText: 'Enter your username',
                   errorText:
                       isMatching ? 'Cannot match the streamer\'s name' : null,
                 ),
               ),
               SizedBox(height: 20.0),
-              Checkbox.adaptive(
-                value: isViewer,
-                onChanged: (value) {
-                  // Reset the streamer name if box is unchecked, switch the user type
-                  setState(() {
-                    isViewer = value!;
-                    if (!value) {
-                      streamerName = '';
-                    }
-                  });
-                },
+              Row(
+                children: [
+                  Checkbox.adaptive(
+                    value: isViewer,
+                    onChanged: (value) {
+                      // Reset the streamer name if box is unchecked, switch the user type
+                      setState(() {
+                        isViewer = value!;
+                        if (!value) {
+                          streamerName = '';
+                        }
+                      });
+                    },
+                  ),
+                  Text('I\'m a viewer'),
+                ],
               ),
               SizedBox(height: 20.0),
               TextField(
@@ -77,13 +86,18 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                 onChanged: (value) {
                   streamerName = value;
                 },
+                onTapOutside: (event) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
                 decoration: kInputTextDecoration.copyWith(
-                    labelText: 'I will be viewing the stream of...'),
+                    labelText: 'I will be viewing the stream of...',
+                    hintText: 'Enter the streamer\'s username'),
               ),
               SizedBox(height: 30.0),
               RoundedButton(
                 title: isViewer ? 'Join Chat' : 'Create Session',
                 color: Color(0xFFEFBF04),
+                textColor: Colors.black,
                 onPressed: () {
                   //TODO: implement navigation logic for users
 
