@@ -57,6 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
+              // makes the row centered on the screen
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Hero(
