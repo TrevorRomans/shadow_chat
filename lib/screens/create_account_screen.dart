@@ -88,7 +88,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   setState(() {
                     showSpinner = true;
                   });
-                  // attempt to create user
+                  //TODO: attempt to create user
                   Navigator.pushNamed(context, SessionPickerScreen.id);
                   setState(() {
                     showSpinner = false;
