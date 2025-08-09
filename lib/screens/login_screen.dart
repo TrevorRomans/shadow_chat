@@ -85,12 +85,32 @@ class _LoginScreenState extends State<LoginScreen> {
               RoundedButton(
                 title: 'Log In',
                 color: Colors.deepPurpleAccent,
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     showSpinner = true;
                   });
-                  //TODO: attempt to create user
-                  Navigator.pushNamed(context, SessionPickerScreen.id);
+                  try {
+                    final newUser = _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
+                    Navigator.pushNamed(context, SessionPickerScreen.id);
+                  } on FirebaseAuthException catch (e) {
+                    showDialog<void>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) => AlertDialog.adaptive(
+                        title: Text('Failed to Sign In'),
+                        content: Text(e.message!),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                   setState(() {
                     showSpinner = false;
                   });
