@@ -90,26 +90,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     showSpinner = true;
                   });
                   try {
-                    final newUser = _auth.signInWithEmailAndPassword(
+                    final newUser = await _auth.signInWithEmailAndPassword(
                         email: email, password: password);
-                    Navigator.pushNamed(context, SessionPickerScreen.id);
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, SessionPickerScreen.id);
+                    }
                   } on FirebaseAuthException catch (e) {
-                    showDialog<void>(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) => AlertDialog.adaptive(
-                        title: Text('Failed to Sign In'),
-                        content: Text(e.message!),
-                        actions: [
-                          TextButton(
-                            child: Text('OK'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      ),
-                    );
+                    if (context.mounted) {
+                      showDialog<void>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) => AlertDialog.adaptive(
+                          title: Text('Failed to Sign In'),
+                          content: Text(e.message!),
+                          actions: [
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                   }
                   setState(() {
                     showSpinner = false;

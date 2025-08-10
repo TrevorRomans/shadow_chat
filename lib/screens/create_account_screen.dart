@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../components/rounded_button.dart';
 import '../constants.dart';
@@ -105,26 +106,35 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     });
                     //TODO: attempt to create user
                     try {
-                      final newUser = _auth.createUserWithEmailAndPassword(
-                          email: email, password: password);
-                      Navigator.pushNamed(context, SessionPickerScreen.id);
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
+                              email: email, password: password);
+                      if (context.mounted) {
+                        Navigator.pushNamed(context, SessionPickerScreen.id);
+                      }
                     } on FirebaseAuthException catch (e) {
-                      showDialog<void>(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) => AlertDialog.adaptive(
-                          title: Text('Failed to Create Account'),
-                          content: Text(e.message!),
-                          actions: [
-                            TextButton(
-                              child: Text('OK'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                      );
+                      if (kDebugMode) {
+                        print(e.message);
+                      }
+                      if (context.mounted) {
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) =>
+                              AlertDialog.adaptive(
+                            title: Text('Failed to Create Account'),
+                            content: Text(e.message!),
+                            actions: [
+                              TextButton(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     }
                     setState(() {
                       showSpinner = false;
