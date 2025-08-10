@@ -103,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListView(
                 reverse: true,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
-                children: testStream,
+                children: testStream.reversed.toList(),
               ),
             ),
             Container(
