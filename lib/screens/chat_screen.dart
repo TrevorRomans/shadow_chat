@@ -94,6 +94,19 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('$streamer\'s Shadow Chat'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: TextButton.icon(
+          onPressed: () {
+            //TODO: add alert dialog before exiting
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_outlined),
+          label: Text(userIsViewer ? 'Leave Chat' : 'End Session'),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
