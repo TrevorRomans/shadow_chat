@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shadow_chat/constants.dart';
@@ -19,6 +20,15 @@ class SessionPickerScreen extends StatefulWidget {
   @override
   State<SessionPickerScreen> createState() => _SessionPickerScreenState();
 }
+
+/*
+ All error codes:
+ 1 = no matching streamer
+ 2 = banned from session
+ 3 = existing streamer
+ 4 = you were just banned
+ 5 = streamer has ended the session
+ */
 
 //TODO: implement Firebase user functionality
 class _SessionPickerScreenState extends State<SessionPickerScreen> {
@@ -58,6 +68,27 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
       );
       Navigator.pop(context);
     }
+  }
+
+  Future<int> checkForErrors() async {
+    // 1 = no matching streamer, 2 = banned from session, 3 = existing streamer
+    if (isViewer) {
+      final docRef =
+          FirebaseFirestore.instance.collection('streams').doc(streamerName);
+      final document = await docRef.get();
+      if (!document.exists) {
+        return 1;
+      } else {
+        final data = await docRef
+            .collection('banList')
+            .where("email", isEqualTo: loggedInUser.email)
+            .get();
+        if (data.size != 0) {
+          return 2;
+        }
+      }
+    }
+    return 0;
   }
 
   @override
@@ -144,6 +175,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                   //TODO: if the document does not exist, give the appropriate warning
                   //TODO: if the document exists, but the user appears in the ban list, give the appropriate warning
                   //TODO: if everything is as it should be, navigate to the chat screen while passing important data as parameters
+
                   Navigator.pushNamed(context, ChatScreen.id);
                 },
               ),
