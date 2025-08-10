@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadow_chat/components/rounded_button.dart';
 import 'package:shadow_chat/constants.dart';
+import 'package:shadow_chat/screens/chat_screen.dart';
 import 'package:shadow_chat/screens/create_account_screen.dart';
 import 'login_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -109,7 +110,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       floatingActionButton: FloatingActionButton(
         onPressed: kIsFABEnabled
             ? () {
-                Navigator.pushNamed(context, LoginScreen.id);
+                Navigator.pushNamed(context, ChatScreen.id);
               }
             : null,
         child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),

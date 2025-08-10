@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const kIsFABEnabled = false;
+const kIsFABEnabled = true;
 
 const kGold = Color(0xFFEFBF04);
 
