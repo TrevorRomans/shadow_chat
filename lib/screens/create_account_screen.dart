@@ -115,7 +115,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         builder: (BuildContext context) => AlertDialog.adaptive(
                           title: Text('Failed to Create Account'),
                           content: Text(e.message!),
-                          actions: <Widget>[
+                          actions: [
                             TextButton(
                               child: Text('OK'),
                               onPressed: () {

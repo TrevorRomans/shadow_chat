@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       builder: (BuildContext context) => AlertDialog.adaptive(
                         title: Text('Failed to Sign In'),
                         content: Text(e.message!),
-                        actions: <Widget>[
+                        actions: [
                           TextButton(
                             child: Text('OK'),
                             onPressed: () {

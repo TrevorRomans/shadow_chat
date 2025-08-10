@@ -1,8 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shadow_chat/constants.dart';
 import '../components/rounded_button.dart';
 import 'chat_screen.dart';
+
+// defined variables here can be accessed from other screens via import
+late User loggedInUser;
+bool isViewer = true;
+String streamerName = '';
+String viewerName = '';
 
 class SessionPickerScreen extends StatefulWidget {
   static String id = 'session_picker_screen';
@@ -15,11 +22,43 @@ class SessionPickerScreen extends StatefulWidget {
 
 //TODO: implement Firebase user functionality
 class _SessionPickerScreenState extends State<SessionPickerScreen> {
-  bool isViewer = true;
   bool showSpinner = false;
   bool isMatching = false;
-  String streamerName = '';
-  String viewerName = '';
+  final _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog.adaptive(
+          content: Text(
+              'Something went wrong with the user data, please try again later'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
