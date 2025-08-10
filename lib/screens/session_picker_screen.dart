@@ -166,7 +166,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
               SizedBox(height: 30.0),
               RoundedButton(
                 title: isViewer ? 'Join Chat' : 'Create Session',
-                color: Color(0xFFEFBF04),
+                color: kGold,
                 textColor: Colors.black,
                 onPressed: () {
                   //TODO: implement navigation logic for users
