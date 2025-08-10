@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shadow_chat/constants.dart';
+import 'package:shadow_chat/screens/welcome_screen.dart';
 import '../components/rounded_button.dart';
 import 'chat_screen.dart';
 
@@ -98,10 +99,11 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         title: Text('Shadow Chat'),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        //TODO: change button to include signing out
+        //TODO: add alert dialog before exiting or signing out
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            _auth.signOut();
+            Navigator.pushNamed(context, WelcomeScreen.id);
           },
           icon: Icon(Icons.arrow_back_outlined),
         ),
