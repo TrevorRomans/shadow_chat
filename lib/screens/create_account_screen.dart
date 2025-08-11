@@ -104,13 +104,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     setState(() {
                       showSpinner = true;
                     });
-                    //TODO: attempt to create user
                     try {
                       final newUser =
                           await _auth.createUserWithEmailAndPassword(
                               email: email, password: password);
                       if (context.mounted) {
-                        Navigator.pushNamed(context, SessionPickerScreen.id);
+                        Navigator.pushReplacementNamed(
+                            context, SessionPickerScreen.id);
                       }
                     } on FirebaseAuthException catch (e) {
                       if (kDebugMode) {

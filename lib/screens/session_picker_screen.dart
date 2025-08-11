@@ -103,7 +103,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         leading: IconButton(
           onPressed: () {
             _auth.signOut();
-            Navigator.pushNamed(context, WelcomeScreen.id);
+            Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back_outlined),
         ),

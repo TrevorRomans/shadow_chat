@@ -93,7 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     final newUser = await _auth.signInWithEmailAndPassword(
                         email: email, password: password);
                     if (context.mounted) {
-                      Navigator.pushNamed(context, SessionPickerScreen.id);
+                      Navigator.pushReplacementNamed(
+                          context, SessionPickerScreen.id);
                     }
                   } on FirebaseAuthException catch (e) {
                     if (context.mounted) {
