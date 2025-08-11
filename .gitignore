@@ -116,3 +116,5 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 /.idea/
+.idea/libraries/Dart_SDK.xml
+.idea/caches/deviceStreaming.xml
