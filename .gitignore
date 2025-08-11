@@ -117,3 +117,4 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 /.idea/
 .idea/libraries/Dart_SDK.xml
+.idea/caches/deviceStreaming.xml
