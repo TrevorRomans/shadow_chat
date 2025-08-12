@@ -206,15 +206,25 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                 color: kGold,
                 textColor: Colors.black,
                 isEnabled: streamerName != '' && username != '' && !isMatching,
-                onPressed: () {
+                onPressed: () async {
                   //TODO: implement navigation logic for users
+
+                  int outcome = await checkForErrors();
+
+                  // Pushes and waits for a response when exiting the next screen
+                  if (outcome == 0 && context.mounted) {
+                    outcome = await Navigator.pushNamed(context, ChatScreen.id)
+                        as int;
+                  }
+
+                  if (outcome != 0) {
+                    //TODO: show the alert based on the outcome
+                  }
 
                   //TODO: if the two names match, only set the state
                   //TODO: if the document does not exist, give the appropriate warning
                   //TODO: if the document exists, but the user appears in the ban list, give the appropriate warning
                   //TODO: if everything is as it should be, navigate to the chat screen while passing important data as parameters
-
-                  Navigator.pushNamed(context, ChatScreen.id);
                 },
               ),
             ],

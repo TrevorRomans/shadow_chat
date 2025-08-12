@@ -101,7 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
         leading: TextButton.icon(
           onPressed: () {
             //TODO: add alert dialog before exiting
-            Navigator.pop(context);
+            Navigator.pop(context, 0);
           },
           icon: Icon(Icons.arrow_back_outlined),
           label: Text(userIsViewer ? 'Leave Chat' : 'End Session'),
