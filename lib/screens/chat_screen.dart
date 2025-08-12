@@ -12,7 +12,8 @@ final bool userIsViewer = kIsFABEnabled ? true : isViewer;
 final String streamer = kIsFABEnabled ? 'TheWraith' : streamerName;
 final String viewer = kIsFABEnabled ? 'Sample' : username;
 
-// final _firestore = FirebaseFirestore.instance.collection('streams').doc(streamer);
+final _firestore =
+    FirebaseFirestore.instance.collection('streams').doc(streamer);
 
 List<Widget> testStream = [
   MessageBubble(
@@ -87,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     if (!userIsViewer) {
       // Using regular set operation will also override an existing document completely if one exists
-      //_firestore.set({"isStreaming": true});
+      _firestore.set({"isStreaming": true});
     }
   }
 

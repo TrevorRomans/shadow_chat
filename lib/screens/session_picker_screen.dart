@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shadow_chat/constants.dart';
@@ -185,13 +186,13 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                 enabled: isViewer && !isMatching,
                 controller: _controller,
                 onChanged: (value) {
-                  streamerName = value;
-                  // Enforces that the viewer's name must be changed and not the streamer
-                  if (username == streamerName) {
-                    setState(() {
+                  setState(() {
+                    streamerName = value;
+                    // Enforces that the viewer's name must be changed and not the streamer
+                    if (username == streamerName) {
                       isMatching = true;
-                    });
-                  }
+                    }
+                  });
                 },
                 onTapOutside: (event) {
                   FocusManager.instance.primaryFocus?.unfocus();
@@ -219,6 +220,9 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
 
                   if (outcome != 0) {
                     //TODO: show the alert based on the outcome
+                    if (kDebugMode) {
+                      print('Outcome was $outcome');
+                    }
                   }
 
                   //TODO: if the two names match, only set the state
@@ -232,11 +236,16 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: kIsFABEnabled
+        onPressed: kDebugMode
             ? () {
-                Navigator.pushNamed(context, ChatScreen.id);
+                print(
+                    'Username is $username, streamer is $streamerName, isMatching is $isMatching');
               }
-            : null,
+            : kIsFABEnabled
+                ? () {
+                    Navigator.pushNamed(context, ChatScreen.id);
+                  }
+                : null,
         child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
       ),
     );
