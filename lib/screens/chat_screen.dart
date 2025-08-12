@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:shadow_chat/constants.dart';
 import 'welcome_screen.dart';
 import 'session_picker_screen.dart'
-    show loggedInUser, isViewer, streamerName, viewerName;
+    show loggedInUser, isViewer, streamerName, username;
 
 //TODO: revert to normal form after Firestore is up and running
 final User? currentUser = kIsFABEnabled ? null : loggedInUser;
 final bool userIsViewer = kIsFABEnabled ? true : isViewer;
 final String streamer = kIsFABEnabled ? 'TheWraith' : streamerName;
-final String viewer = kIsFABEnabled ? 'Sample' : viewerName;
+final String viewer = kIsFABEnabled ? 'Sample' : username;
 
 // final _firestore = FirebaseFirestore.instance.collection('streams').doc(streamer);
 
