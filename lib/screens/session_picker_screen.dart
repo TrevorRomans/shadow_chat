@@ -11,7 +11,7 @@ import 'chat_screen.dart';
 late User loggedInUser;
 bool isViewer = true;
 String streamerName = '';
-String viewerName = '';
+String username = '';
 
 class SessionPickerScreen extends StatefulWidget {
   static String id = 'session_picker_screen';
@@ -36,6 +36,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
   bool showSpinner = false;
   bool isMatching = false;
   final _auth = FirebaseAuth.instance;
+  final _controller = TextEditingController();
 
   @override
   void initState() {
@@ -88,6 +89,14 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
           return 2;
         }
       }
+    } else {
+      final document = await FirebaseFirestore.instance
+          .collection('streams')
+          .doc(username)
+          .get();
+      if (document.exists) {
+        return 3;
+      }
     }
     return 0;
   }
@@ -120,7 +129,21 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
               TextField(
                 // All users enter their names here
                 onChanged: (value) {
-                  viewerName = value;
+                  if (isMatching) {
+                    setState(() {
+                      isMatching = false;
+                    });
+                  }
+
+                  username = value;
+                  if (!isViewer) {
+                    streamerName = value;
+                  } else if (username == streamerName) {
+                    // Implied to be a viewer, the names cannot match now
+                    setState(() {
+                      isMatching = true;
+                    });
+                  }
                 },
                 onTapOutside: (event) {
                   // If the user taps outside the field, the keyboard will close
@@ -139,11 +162,16 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                   Checkbox.adaptive(
                     value: isViewer,
                     onChanged: (value) {
-                      // Reset the streamer name if box is unchecked, switch the user type
+                      // Switch the user type
+                      // Streamer = set both names to match, viewer = clear the streamer name
                       setState(() {
                         isViewer = value!;
+                        isMatching = false;
                         if (!value) {
+                          streamerName = username;
+                        } else {
                           streamerName = '';
+                          _controller.clear();
                         }
                       });
                     },
@@ -154,9 +182,16 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
               SizedBox(height: 20.0),
               TextField(
                 // Only viewers enter their streamer's name here
-                enabled: isViewer,
+                enabled: isViewer && !isMatching,
+                controller: _controller,
                 onChanged: (value) {
                   streamerName = value;
+                  // Enforces that the viewer's name must be changed and not the streamer
+                  if (username == streamerName) {
+                    setState(() {
+                      isMatching = true;
+                    });
+                  }
                 },
                 onTapOutside: (event) {
                   FocusManager.instance.primaryFocus?.unfocus();
@@ -170,6 +205,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                 title: isViewer ? 'Join Chat' : 'Create Session',
                 color: kGold,
                 textColor: Colors.black,
+                isEnabled: streamerName != '' && username != '' && !isMatching,
                 onPressed: () {
                   //TODO: implement navigation logic for users
 
