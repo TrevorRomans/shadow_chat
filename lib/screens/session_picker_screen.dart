@@ -78,6 +78,8 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
     if (isViewer) {
       final docRef =
           FirebaseFirestore.instance.collection('streams').doc(streamerName);
+
+      // Document must exist for access to be possible
       final document = await docRef.get();
       if (!document.exists) {
         return 1;
@@ -99,11 +101,12 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         }
       }
     } else {
+      // The streamer cannot use the same name as an ongoing streamer, but existing stream may have been finished
       final document = await FirebaseFirestore.instance
           .collection('streams')
           .doc(username)
           .get();
-      if (document.exists) {
+      if (document.exists && document.data()!['isStreaming'] == true) {
         return 3;
       }
     }
@@ -162,7 +165,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                   labelText: 'Call me...',
                   hintText: 'Enter your username',
                   errorText:
-                      isMatching ? 'Cannot match the streamer\'s name' : null,
+                      isMatching ? "Cannot match the streamer's name" : null,
                 ),
               ),
               SizedBox(height: 20.0),
@@ -185,7 +188,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                       });
                     },
                   ),
-                  Text('I\'m a viewer'),
+                  Text("I'm a viewer"),
                 ],
               ),
               SizedBox(height: 20.0),
@@ -207,7 +210,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                 },
                 decoration: kInputTextDecoration.copyWith(
                     labelText: 'I will be viewing the stream of...',
-                    hintText: 'Enter the streamer\'s username'),
+                    hintText: "Enter the streamer's username"),
               ),
               SizedBox(height: 30.0),
               RoundedButton(

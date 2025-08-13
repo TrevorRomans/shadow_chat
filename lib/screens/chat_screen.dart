@@ -96,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$streamer\'s Shadow Chat'),
+        title: Text("$streamer's Shadow Chat"),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: TextButton.icon(
