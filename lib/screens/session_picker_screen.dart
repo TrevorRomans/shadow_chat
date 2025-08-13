@@ -113,6 +113,44 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
     return 0;
   }
 
+  void badEnding(int reason) {
+    String message = switch (reason) {
+      1 =>
+        'No active streamer with that name exists at this time. You may have entered a name that does not match the one being used by your streamer',
+      2 ||
+      4 =>
+        'You have been banned from this session. You will either need to be unbanned or wait for a fresh session to rejoin',
+      3 =>
+        'There is already a streamer using that name, and streamer names must be unique. Either confirm your spelling or choose another name',
+      5 =>
+        'The streamer has just ended the session. If the streamer did not intend this, perhaps see if you can notify them of this event',
+      _ =>
+        'It appears that an undiagnosed error has been encountered. Feel free to try again at any time',
+    };
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog.adaptive(
+        title: Text('Unable to Access Chat Session'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -231,9 +269,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
 
                   if (outcome != 0) {
                     //TODO: show the alert based on the outcome
-                    if (kDebugMode) {
-                      print('Outcome was $outcome');
-                    }
+                    badEnding(outcome);
                   }
 
                   //TODO: if the two names match, only set the state
