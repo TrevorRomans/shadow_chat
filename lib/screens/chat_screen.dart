@@ -93,84 +93,114 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   @override
+  void dispose() {
+    messageTextController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("$streamer's Shadow Chat"),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: TextButton.icon(
-          onPressed: () {
-            //TODO: add alert dialog before exiting
-            Navigator.pop(context, 0);
-          },
-          icon: Icon(Icons.arrow_back_outlined),
-          label: Text(userIsViewer ? 'Leave Chat' : 'End Session'),
-        ),
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: ListView(
-                reverse: true,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
-                children: testStream.reversed.toList(),
-              ),
+    return StreamBuilder(
+      stream: _firestore.snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data!['isStreaming'] == false) {
+          Navigator.pop(context, 5);
+        }
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("$streamer's Shadow Chat"),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: /*userIsViewer
+                ? null
+                : */
+                [
+              TextButton(
+                onPressed: () {
+                  //TODO: add new screen for the ban function
+
+                  //TODO: This method is just to test the stream builder, remove when finished testing
+                  _firestore.update({'isStreaming': false});
+                },
+                child: Text('Ban a User'),
+              )
+            ],
+            leading: TextButton.icon(
+              onPressed: () {
+                //TODO: add alert dialog before exiting
+                Navigator.pop(context, 0);
+              },
+              icon: Icon(Icons.arrow_back_outlined),
+              label: Text(userIsViewer ? 'Leave Chat' : 'End Session'),
             ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: kGold, width: 2.0),
+          ),
+          body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: ListView(
+                    reverse: true,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
+                    children: testStream.reversed.toList(),
+                  ),
                 ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: messageTextController,
-                      onChanged: (value) {
-                        messageText = value;
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        hintText: 'Type your message here...',
-                        border: InputBorder.none,
-                      ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: kGold, width: 2.0),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      messageTextController.clear();
-                      //TODO: add message to firestore
-                    },
-                    child: Text(
-                      'Send',
-                      style: TextStyle(
-                        color: kGold,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: messageTextController,
+                          onChanged: (value) {
+                            messageText = value;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 20.0),
+                            hintText: 'Type your message here...',
+                            border: InputBorder.none,
+                          ),
+                        ),
                       ),
-                    ),
+                      TextButton(
+                        onPressed: () {
+                          messageTextController.clear();
+                          //TODO: add message to firestore
+                        },
+                        child: Text(
+                          'Send',
+                          style: TextStyle(
+                            color: kGold,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: kIsFABEnabled
-            ? () {
-                Navigator.pushNamed(context, WelcomeScreen.id);
-              }
-            : null,
-        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
-      ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: kIsFABEnabled
+                ? () {
+                    Navigator.pushNamed(context, WelcomeScreen.id);
+                  }
+                : null,
+            child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
+          ),
+        );
+      },
     );
   }
 }
