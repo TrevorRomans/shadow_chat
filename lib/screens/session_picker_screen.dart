@@ -82,6 +82,14 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
       if (!document.exists) {
         return 1;
       } else {
+        // If the stream session is ended but the document hasn't been fully deleted yet
+        await docRef.get().then((doc) {
+          if (doc.data()!['isStreaming'] == false) {
+            return 1;
+          }
+        });
+
+        // Attempt to retrieve banned users with a matching email address (needs to be 0)
         final data = await docRef
             .collection('banList')
             .where("email", isEqualTo: loggedInUser.email)
