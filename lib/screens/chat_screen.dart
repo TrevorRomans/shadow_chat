@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +81,7 @@ class ChatScreen extends StatefulWidget {
 
 // By entering this screen, it is assumed that none of the errors from Session Picker have occurred
 class _ChatScreenState extends State<ChatScreen> {
+  late StreamSubscription<DocumentSnapshot> streamSubscription;
   final messageTextController = TextEditingController();
   String messageText = '';
 
@@ -90,117 +93,114 @@ class _ChatScreenState extends State<ChatScreen> {
       // Using regular set operation will also override an existing document completely if one exists
       _firestore.set({"isStreaming": true});
     }
+    streamSubscription = _firestore.snapshots().listen((snapshot) {
+      if (snapshot.data()!['isStreaming'] == false && context.mounted) {
+        Navigator.pop(context, 5);
+      }
+    });
   }
 
   @override
   void dispose() {
     messageTextController.dispose();
+    streamSubscription.cancel();
 
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _firestore.snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data!['isStreaming'] == false) {
-          Navigator.pop(context, 5);
-        }
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("$streamer's Shadow Chat"),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            actions: /*userIsViewer
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("$streamer's Shadow Chat"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: /*userIsViewer
                 ? null
                 : */
-                [
-              TextButton(
-                onPressed: () {
-                  //TODO: add new screen for the ban function
+            [
+          TextButton(
+            onPressed: () {
+              //TODO: add new screen for the ban function
 
-                  //TODO: This method is just to test the stream builder, remove when finished testing
-                  _firestore.update({'isStreaming': false});
-                },
-                child: Text('Ban a User'),
-              )
-            ],
-            leading: TextButton.icon(
-              onPressed: () {
-                //TODO: add alert dialog before exiting
-                Navigator.pop(context, 0);
-              },
-              icon: Icon(Icons.arrow_back_outlined),
-              label: Text(userIsViewer ? 'Leave Chat' : 'End Session'),
+              //TODO: This method is just to test the stream builder, remove when finished testing
+              _firestore.update({'isStreaming': false});
+            },
+            child: Text('Ban a User'),
+          )
+        ],
+        leading: TextButton.icon(
+          onPressed: () {
+            //TODO: add alert dialog before exiting
+            Navigator.pop(context, 0);
+          },
+          icon: Icon(Icons.arrow_back_outlined),
+          label: Text(userIsViewer ? 'Leave Chat' : 'End Session'),
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: ListView(
+                reverse: true,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
+                children: testStream.reversed.toList(),
+              ),
             ),
-          ),
-          body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: ListView(
-                    reverse: true,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
-                    children: testStream.reversed.toList(),
-                  ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: kGold, width: 2.0),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: kGold, width: 2.0),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: messageTextController,
+                      onChanged: (value) {
+                        messageText = value;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        hintText: 'Type your message here...',
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: messageTextController,
-                          onChanged: (value) {
-                            messageText = value;
-                          },
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            hintText: 'Type your message here...',
-                            border: InputBorder.none,
-                          ),
-                        ),
+                  TextButton(
+                    onPressed: () {
+                      messageTextController.clear();
+                      //TODO: add message to firestore
+                    },
+                    child: Text(
+                      'Send',
+                      style: TextStyle(
+                        color: kGold,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
                       ),
-                      TextButton(
-                        onPressed: () {
-                          messageTextController.clear();
-                          //TODO: add message to firestore
-                        },
-                        child: Text(
-                          'Send',
-                          style: TextStyle(
-                            color: kGold,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: kIsFABEnabled
-                ? () {
-                    Navigator.pushNamed(context, WelcomeScreen.id);
-                  }
-                : null,
-            child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: kIsFABEnabled
+            ? () {
+                Navigator.pushNamed(context, WelcomeScreen.id);
+              }
+            : null,
+        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
+      ),
     );
   }
 }

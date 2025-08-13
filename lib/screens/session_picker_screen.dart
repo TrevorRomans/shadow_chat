@@ -179,21 +179,18 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
               TextField(
                 // All users enter their names here
                 onChanged: (value) {
-                  if (isMatching) {
-                    setState(() {
+                  setState(() {
+                    if (isMatching) {
                       isMatching = false;
-                    });
-                  }
-
-                  username = value;
-                  if (!isViewer) {
-                    streamerName = value;
-                  } else if (username == streamerName) {
-                    // Implied to be a viewer, the names cannot match now
-                    setState(() {
+                    }
+                    username = value;
+                    if (!isViewer) {
+                      streamerName = value;
+                    } else if (username == streamerName) {
+                      // Implied to be a viewer, the names cannot match now
                       isMatching = true;
-                    });
-                  }
+                    }
+                  });
                 },
                 onTapOutside: (event) {
                   // If the user taps outside the field, the keyboard will close
