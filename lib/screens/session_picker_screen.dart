@@ -262,6 +262,11 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                   if (outcome == 0 && context.mounted) {
                     outcome = await Navigator.pushNamed(context, ChatScreen.id)
                         as int;
+                    setState(() {
+                      username = '';
+                      streamerName = '';
+                      isMatching = false;
+                    });
                   }
 
                   if (outcome != 0) {
