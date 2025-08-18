@@ -230,6 +230,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         'text': messageText,
                         'sender': viewer,
                         'email': currentUser.email,
+                        'timestamp': FieldValue.serverTimestamp(),
                       });
                     },
                     child: Text(
@@ -247,14 +248,14 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: kIsFABEnabled
-            ? () {
-                Navigator.pushNamed(context, WelcomeScreen.id);
-              }
-            : null,
-        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: kIsFABEnabled
+      //       ? () {
+      //           Navigator.pushNamed(context, WelcomeScreen.id);
+      //         }
+      //       : null,
+      //   child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
+      // ),
     );
   }
 }
@@ -265,7 +266,8 @@ class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').snapshots(),
+      stream:
+          _firestore.collection('messages').orderBy('timestamp').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
