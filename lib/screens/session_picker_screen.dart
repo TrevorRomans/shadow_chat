@@ -134,6 +134,8 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         'There is already a streamer using that name, and streamer names must be unique. Either confirm your spelling or choose another name',
       5 =>
         'The streamer has just ended the session. If the streamer did not intend this, perhaps see if you can notify them of this event',
+      6 =>
+        'Session has successfully concluded. Begin a stream with the same username to reset the session\'s content',
       7 =>
         'Someone in this chat is using that name currently. However, this only applies to EXACT matches, so you have the option to make only a slight change to your selection to continue',
       _ =>
@@ -143,7 +145,7 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog.adaptive(
-        title: Text('Unable to Access Chat Session'),
+        title: reason == 6 ? null : Text('Unable to Access Chat Session'),
         content: Text(message),
         actions: <Widget>[
           TextButton(
@@ -295,19 +297,6 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: kDebugMode
-            ? () {
-                print(
-                    'Username is $username, streamer is $streamerName, isMatching is $isMatching');
-              }
-            : kIsFABEnabled
-                ? () {
-                    Navigator.pushNamed(context, ChatScreen.id);
-                  }
-                : null,
-        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
       ),
     );
   }

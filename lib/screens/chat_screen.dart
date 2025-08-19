@@ -142,13 +142,22 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void leaveAsViewer(int outcome) async {
+    // Limit to 1 because only 1 match is ever possible
     final docRef = await _firestore
         .collection('users')
         .where("email", isEqualTo: currentUser.email)
+        .limit(1)
         .get();
     for (var doc in docRef.docs) {
       await _firestore.collection('users').doc(doc.id).delete();
     }
+    if (context.mounted) {
+      Navigator.pop(context, outcome);
+    }
+  }
+
+  void leaveAsStreamer(int outcome) async {
+    await _firestore.update({'isStreaming': false});
     if (context.mounted) {
       Navigator.pop(context, outcome);
     }
@@ -167,7 +176,6 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 150.0,
         title: Text("$streamer's Shadow Chat"),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -184,13 +192,44 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Text('Ban a User'),
                 )
               ],
-        leading: TextButton.icon(
-          onPressed: () {
-            //TODO: add alert dialog before exiting
-            Navigator.pop(context, 0);
+        leading: IconButton(
+          onPressed: () async {
+            //TODO: add alert dialog
+            bool? confirmed = await showDialog<bool>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) => AlertDialog.adaptive(
+                title: Text('Are you sure you want to leave?'),
+                content: userIsViewer
+                    ? null
+                    : Text(
+                        'As the streamer, this will terminate the session. Any content in this session will be beyond recovery, and if a new session starts with the same name, this one will be permanently wiped'),
+                actions: [
+                  TextButton(
+                    child: Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Confirm'),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              ),
+            );
+            confirmed ??= false;
+            if (confirmed) {
+              if (userIsViewer) {
+                leaveAsViewer(0);
+              } else {
+                leaveAsStreamer(6);
+              }
+            }
           },
           icon: Icon(Icons.arrow_back_outlined),
-          label: Text(userIsViewer ? 'Leave Chat' : 'End Session'),
         ),
       ),
       body: SafeArea(
@@ -248,14 +287,6 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: kIsFABEnabled
-      //       ? () {
-      //           Navigator.pushNamed(context, WelcomeScreen.id);
-      //         }
-      //       : null,
-      //   child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
-      // ),
     );
   }
 }
