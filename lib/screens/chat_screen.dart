@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shadow_chat/constants.dart';
+import 'package:shadow_chat/screens/ban_screen.dart';
 import 'welcome_screen.dart';
 import 'session_picker_screen.dart'
     show loggedInUser, isViewer, streamerName, username;
@@ -196,7 +197,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     //TODO: add new screen for the ban function
 
                     //TODO: This method is just to test the stream builder, remove when finished testing
-                    _firestore.update({'isStreaming': false});
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) => BanScreen(firestore: _firestore),
+                        isDismissible: true);
                   },
                   child: Text('Ban a User'),
                 )
