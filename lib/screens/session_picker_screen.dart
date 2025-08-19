@@ -95,9 +95,19 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         final data = await docRef
             .collection('banList')
             .where("email", isEqualTo: loggedInUser.email)
+            .limit(1)
             .get();
         if (data.size != 0) {
           return 2;
+        }
+
+        final userData = await docRef
+            .collection('users')
+            .where('username', isEqualTo: username)
+            .limit(1)
+            .get();
+        if (userData.size != 0) {
+          return 7;
         }
       }
     } else {
@@ -124,6 +134,8 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         'There is already a streamer using that name, and streamer names must be unique. Either confirm your spelling or choose another name',
       5 =>
         'The streamer has just ended the session. If the streamer did not intend this, perhaps see if you can notify them of this event',
+      7 =>
+        'Someone in this chat is using that name currently. However, this only applies to EXACT matches, so you have the option to make only a slight change to your selection to continue',
       _ =>
         'It appears that an undiagnosed error has been encountered. Feel free to try again at any time',
     };
