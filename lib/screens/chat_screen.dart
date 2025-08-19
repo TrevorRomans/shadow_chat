@@ -87,6 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
   StreamSubscription<QuerySnapshot>? banSubscription;
   final messageTextController = TextEditingController();
   String messageText = '';
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -94,8 +95,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
     if (!userIsViewer) {
       // Using regular set operation will also override an existing document completely if one exists
-      _firestore.set({"isStreaming": true});
-      wipeStream();
+      _isLoading = true;
+      _firestore.set({"isStreaming": true}).then((_) {
+        wipeStream().then((_) {
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+            });
+          }
+        });
+      });
     } else {
       _firestore
           .collection('users')
@@ -118,17 +127,17 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> wipeStream() async {
-    final userSnap = await _firestore.collection('users').limit(1).get();
-    if (userSnap.size != 0) {
+    final messageSnap = await _firestore.collection('messages').limit(1).get();
+    if (messageSnap.size != 0) {
       final batch = FirebaseFirestore.instance.batch();
       final messages = await _firestore.collection('messages').get();
       final users = await _firestore.collection('users').get();
       final bans = await _firestore.collection('banList').get();
-      for (var doc in users.docs) {
+      for (var doc in messages.docs) {
         batch.delete(doc.reference);
       }
-      if (messages.size != 0) {
-        for (var doc in messages.docs) {
+      if (users.size != 0) {
+        for (var doc in users.docs) {
           batch.delete(doc.reference);
         }
       }
@@ -237,7 +246,16 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MessagesStream(),
+            if (_isLoading && !userIsViewer)
+              Expanded(
+                child: Center(
+                  child: CircularProgressIndicator.adaptive(
+                    backgroundColor: kGold,
+                  ),
+                ),
+              )
+            else
+              MessagesStream(),
             Container(
               decoration: BoxDecoration(
                 border: Border(
