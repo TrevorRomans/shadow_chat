@@ -107,14 +107,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: kIsFABEnabled
-            ? () {
-                Navigator.pushNamed(context, ChatScreen.id);
-              }
-            : null,
-        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
-      ),
     );
   }
 }

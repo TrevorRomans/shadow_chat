@@ -125,14 +125,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: kIsFABEnabled
-            ? () {
-                Navigator.pushNamed(context, CreateAccountScreen.id);
-              }
-            : null,
-        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
-      ),
     );
   }
 }

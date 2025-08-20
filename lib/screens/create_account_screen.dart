@@ -150,14 +150,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: kIsFABEnabled
-            ? () {
-                Navigator.pushNamed(context, SessionPickerScreen.id);
-              }
-            : null,
-        child: kIsFABEnabled ? null : Icon(Icons.disabled_by_default),
-      ),
     );
   }
 }
