@@ -21,7 +21,7 @@
         <option name="modules">
           <set>
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/cloud_firestore-6.0.0/android" />
-            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_auth-6.0.0/android" />
+            <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_auth-6.0.1/android" />
             <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_core-4.0.0/android" />
             <option value="$USER_HOME$/Developer/flutter/packages/flutter_tools/gradle" />
             <option value="$PROJECT_DIR$" />
