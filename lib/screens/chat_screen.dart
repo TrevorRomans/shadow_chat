@@ -116,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
           .snapshots()
           .listen((snapshot) {
         if (snapshot.size != 0 && context.mounted) {
-          Navigator.pop(context, 4);
+          leaveAsViewer(4);
         }
       });
     }
@@ -186,7 +186,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("$streamer's Shadow Chat"),
+        title: Text("$streamer's Chat"),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: userIsViewer
@@ -272,6 +272,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       controller: messageTextController,
+                      maxLines: 3,
                       onChanged: (value) {
                         messageText = value;
                       },

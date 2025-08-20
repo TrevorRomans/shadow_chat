@@ -33,7 +33,9 @@ class _BanScreenState extends State<BanScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-                'Enter a username to ban from the session. Below are the users currently banned, and entering their name will unban them'),
+              'Enter a username to ban from the session. Below are the users currently banned, and entering their name will unban them',
+              style: TextStyle(color: Colors.red),
+            ),
             StreamBuilder<QuerySnapshot>(
               stream: widget.firestore.collection('banList').snapshots(),
               builder: (context, snapshot) {
@@ -71,31 +73,31 @@ class _BanScreenState extends State<BanScreen> {
                 TextButton(
                   onPressed: () async {
                     bool readyToExit = false;
-                    final userData = await widget.firestore
-                        .collection('users')
-                        .where('username', isEqualTo: userToBan)
+                    final banData = await widget.firestore
+                        .collection('banList')
+                        .where('lastKnownUsername', isEqualTo: userToBan)
                         .limit(1)
                         .get();
-                    if (userData.size != 0) {
-                      String email = userData.docs[0]['email']!;
-                      String username = userData.docs[0]['username']!;
-                      await widget.firestore.collection('banList').add({
-                        'email': email,
-                        'lastKnownUsername': username,
-                      }).then((_) {
+                    if (banData.size != 0) {
+                      await banData.docs[0].reference.delete().then((_) {
                         if (context.mounted) {
                           readyToExit = true;
                           Navigator.pop(context);
                         }
                       });
                     } else {
-                      final banData = await widget.firestore
-                          .collection('banList')
-                          .where('lastKnownUsername', isEqualTo: userToBan)
+                      final userData = await widget.firestore
+                          .collection('users')
+                          .where('username', isEqualTo: userToBan)
                           .limit(1)
                           .get();
-                      if (banData.size != 0) {
-                        await banData.docs[0].reference.delete().then((_) {
+                      if (userData.size != 0) {
+                        String email = userData.docs[0]['email']!;
+                        String username = userData.docs[0]['username']!;
+                        await widget.firestore.collection('banList').add({
+                          'email': email,
+                          'lastKnownUsername': username,
+                        }).then((_) {
                           if (context.mounted) {
                             readyToExit = true;
                             Navigator.pop(context);
