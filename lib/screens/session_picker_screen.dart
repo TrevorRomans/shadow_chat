@@ -10,9 +10,9 @@ import 'chat_screen.dart';
 
 // defined variables here can be accessed from other screens via import
 late User loggedInUser;
-bool isViewer = true;
-String streamerName = '';
-String username = '';
+late bool isViewer;
+late String streamerName;
+late String username;
 
 class SessionPickerScreen extends StatefulWidget {
   static String id = 'session_picker_screen';
@@ -44,6 +44,9 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
     super.initState();
 
     getCurrentUser();
+    isViewer = true;
+    streamerName = '';
+    username = '';
   }
 
   void getCurrentUser() async {
@@ -276,11 +279,6 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                   if (outcome == 0 && context.mounted) {
                     outcome = await Navigator.pushNamed(context, ChatScreen.id)
                         as int;
-                    setState(() {
-                      username = '';
-                      streamerName = '';
-                      isMatching = false;
-                    });
                   }
 
                   if (outcome != 0) {
