@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shadow_chat/constants.dart';
-import 'package:shadow_chat/screens/welcome_screen.dart';
 import '../components/rounded_button.dart';
 import 'chat_screen.dart';
 
@@ -32,7 +30,6 @@ class SessionPickerScreen extends StatefulWidget {
  5 = streamer has ended the session
  */
 
-//TODO: implement Firebase user functionality
 class _SessionPickerScreenState extends State<SessionPickerScreen> {
   bool showSpinner = false;
   bool isMatching = false;
@@ -175,7 +172,6 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
         title: Text('Shadow Chat'),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        //TODO: add alert dialog before exiting or signing out
         leading: IconButton(
           onPressed: () {
             _auth.signOut();
@@ -271,8 +267,6 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                 textColor: Colors.black,
                 isEnabled: streamerName != '' && username != '' && !isMatching,
                 onPressed: () async {
-                  //TODO: implement navigation logic for users
-
                   int outcome = await checkForErrors();
 
                   // Pushes and waits for a response when exiting the next screen
@@ -282,14 +276,8 @@ class _SessionPickerScreenState extends State<SessionPickerScreen> {
                   }
 
                   if (outcome != 0) {
-                    //TODO: show the alert based on the outcome
                     badEnding(outcome);
                   }
-
-                  //TODO: if the two names match, only set the state
-                  //TODO: if the document does not exist, give the appropriate warning
-                  //TODO: if the document exists, but the user appears in the ban list, give the appropriate warning
-                  //TODO: if everything is as it should be, navigate to the chat screen while passing important data as parameters
                 },
               ),
             ],

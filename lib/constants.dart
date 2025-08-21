@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-const kIsFABEnabled = false;
-
 const kGold = Color(0xFFEFBF04);
 
 const kInputTextDecoration = InputDecoration(
